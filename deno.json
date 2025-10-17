@@ -1,0 +1,20 @@
+{
+  "name": "@mastrojs/images",
+  "version": "0.0.2",
+  "fmt": {
+    "lineWidth": 90
+  },
+  "compilerOptions": {
+    "lib": ["dom", "deno.ns"]
+  },
+  "exports": {
+    ".": "./images.ts"
+  },
+  "imports": {
+    "@imagemagick/magick-wasm": "npm:@imagemagick/magick-wasm@^0.0.36",
+    "@mastrojs/mastro": "jsr:@mastrojs/mastro@0",
+    "@std/assert": "jsr:@std/assert@^1.0.15",
+    "@std/media-types": "jsr:@std/media-types@^1.1.0"
+  },
+  "lock": false
+}
