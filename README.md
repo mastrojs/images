@@ -15,6 +15,10 @@ Uses [`@imagemagick/magick-wasm`](https://www.npmjs.com/package/@imagemagick/mag
 
     pnpm add jsr:@mastrojs/images
 
+### Bun
+
+    bunx jsr add @mastrojs/images
+
 
 ## Usage
 
