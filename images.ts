@@ -10,10 +10,9 @@ import {
   initializeImageMagick,
   MagickFormat,
 } from "@imagemagick/magick-wasm";
-import { findFiles, getParams } from "@mastrojs/mastro";
+import { findFiles, getParams, readFile } from "@mastrojs/mastro";
 import { staticCacheControlVal } from "@mastrojs/mastro/server";
 import { contentType } from "@std/media-types";
-import { readFile } from "node:fs/promises";
 
 /**
  * Image format, for example `"WEBP"`.
@@ -31,8 +30,9 @@ export interface ImagePreset {
   transform: (image: IMagickImage) => void;
 }
 
+const version = "0.0.36";
 const wasmUrl = new URL(
-  "https://cdn.jsdelivr.net/npm/@imagemagick/magick-wasm@0.0.36/dist/magick.wasm",
+  `https://cdn.jsdelivr.net/npm/@imagemagick/magick-wasm@${version}/dist/magick.wasm`,
 );
 
 /**
@@ -148,13 +148,19 @@ export const transformImage = async (
 
 const initialize = async () => {
   if (typeof document === "undefined" && typeof Deno === "undefined") {
-    const wasmLocation =
-      "node_modules/.pnpm/@imagemagick+magick-wasm@0.0.36/node_modules/@imagemagick/magick-wasm/dist/magick.wasm";
-    await initializeImageMagick(await readFile(wasmLocation));
-  } else if (typeof caches === "undefined") {
-    const response = await fetch(wasmUrl);
-    await initializeImageMagick(new Int8Array(await response.arrayBuffer()));
+    const nodeJsInit = async (wasmLocation: string) =>
+      initializeImageMagick(await readFile(wasmLocation));
+    try {
+      // pnpm
+      await nodeJsInit(
+        `node_modules/.pnpm/@imagemagick+magick-wasm@${version}/node_modules/@imagemagick/magick-wasm/dist/magick.wasm`,
+      );
+    } catch {
+      // npm
+      await nodeJsInit("node_modules/@imagemagick/magick-wasm/dist/magick.wasm");
+    }
   } else {
+    // Deno, browser
     const cache = await caches.open("magick_native");
     const cached = await cache.match(wasmUrl);
     if (cached) {
