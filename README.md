@@ -43,6 +43,6 @@ and an image placed at `/images/blue-marble.jpg`, you can use the transformed im
 
 You can name your image presets whatever you want – `small` is just an example. The `image` that the `transform` callback receives is a [IMagickImage](https://github.com/dlemstra/magick-wasm/blob/82a4c4e45d5fda6c88becbaba8340df3f5d30c13/src/magick-image.ts#L81), on which you can call methods like `.resize(64, 64)` etc.
 
-To learn more, see the [`@mastrojs/images` API docs](https://jsr.io/@mastrojs/images/doc) and [Mastro Guide: Transforming images](https://mastrojs.github.io/guide/bundling-assets-caching/#transforming-images).
+To learn more, see the [`@mastrojs/images` API docs](https://jsr.io/@mastrojs/images/doc) and [Mastro Guide: Transforming images](https://mastrojs.github.io/guide/bundling-assets/#transforming-images).
 
-For a statically generated site, this is all you need to do. If you're running Mastro as a server, read the section [Build step](https://mastrojs.github.io/guide/bundling-assets-caching/#build-step) in the Mastro Guide to pregenerate the images.
+For a statically generated site, this is all you need to do. If you're running Mastro as a server, read the section [Build step](https://mastrojs.github.io/guide/bundling-assets/#build-step) in the Mastro Guide to pregenerate the images.
