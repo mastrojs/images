@@ -66,7 +66,7 @@ export const createImagesRoute = (
   getStaticPaths: () => Promise<string[]>;
 } => {
   const GET = async (req: Request) => {
-    const { slug } = getParams(req.url);
+    const { slug } = getParams(req);
     if (!slug) {
       return new Response("404 not found", { status: 404 });
     }
@@ -110,7 +110,7 @@ export const createImagesRoute = (
     const images = await findFiles(baseDir + "**/*");
     return images.flatMap((img) =>
       Object.keys(presets).map((preset) =>
-        `/_images/${preset}/${img.slice(baseDir.length + 1)}.webp`
+        `/_images/${preset}/${img.slice(baseDir.length)}.webp`
       )
     );
   };
