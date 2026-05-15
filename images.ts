@@ -11,7 +11,7 @@ import {
   MagickFormat,
 } from "@imagemagick/magick-wasm";
 import { findFiles, getParams, readFile } from "@mastrojs/mastro";
-import { staticCacheControlVal } from "@mastrojs/mastro/server";
+import { staticCacheControlVal } from "@mastrojs/mastro/server-filebased";
 import { contentType } from "@std/media-types";
 
 /**
@@ -37,9 +37,6 @@ const wasmUrl = new URL(
 
 /**
  * Creates a route to transform images according to the specified presets.
- *
- * Important: Cache-Control maxage is set to 7 days if not on localhost. Thus once you deploy it,
- * you may need to change the preset name (`small` in the example below) for things to update.
  *
  * Usage: with `/routes/_images/[...slug].server.ts` containing:
  *
