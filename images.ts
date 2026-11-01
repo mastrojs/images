@@ -11,7 +11,6 @@ import {
   MagickFormat,
 } from "@imagemagick/magick-wasm";
 import { findFiles, getParams, readFile } from "@mastrojs/mastro";
-import { staticCacheControlVal } from "@mastrojs/mastro/server-filebased";
 import { contentType } from "@std/media-types";
 
 /**
@@ -96,9 +95,8 @@ export const createImagesRoute = (
 
     const res = new Response(img);
     res.headers.set("Content-Type", contentType(format) || "image/?");
-    const cacheHeader = staticCacheControlVal(req);
-    if (cacheHeader) {
-      res.headers.set("Cache-Control", cacheHeader);
+    if (new URL(req.url).hostname === "localhost") {
+      res.headers.set("Cache-Control", "max-age=0");
     }
     return res;
   };
