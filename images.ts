@@ -29,7 +29,7 @@ export interface ImagePreset {
   transform: (image: IMagickImage) => void;
 }
 
-const version = "0.0.36";
+const version = "0.0.45";
 const wasmUrl = new URL(
   `https://cdn.jsdelivr.net/npm/@imagemagick/magick-wasm@${version}/dist/magick.wasm`,
 );
@@ -143,17 +143,9 @@ export const transformImage = async (
 
 const initialize = async () => {
   if (typeof document === "undefined" && typeof Deno === "undefined") {
-    const nodeJsInit = async (wasmLocation: string) =>
-      initializeImageMagick(await readFile(wasmLocation));
-    try {
-      // pnpm
-      await nodeJsInit(
-        `node_modules/.pnpm/@imagemagick+magick-wasm@${version}/node_modules/@imagemagick/magick-wasm/dist/magick.wasm`,
-      );
-    } catch {
-      // npm
-      await nodeJsInit("node_modules/@imagemagick/magick-wasm/dist/magick.wasm");
-    }
+    const fs = await import("node:fs/promises");
+    const wasmUrl = new URL(import.meta.resolve("@imagemagick/magick-wasm/magick.wasm"));
+    await initializeImageMagick(await fs.readFile(wasmUrl));
   } else {
     // Deno, browser
     const cache = await caches.open("magick_native");
