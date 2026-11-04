@@ -144,7 +144,9 @@ export const transformImage = async (
 const initialize = async () => {
   if (typeof document === "undefined" && typeof Deno === "undefined") {
     const fs = await import("node:fs/promises");
-    const wasmUrl = new URL(import.meta.resolve("@imagemagick/magick-wasm/magick.wasm"));
+    // obfuscate path to prevent JSR from messing with it:
+    const path = ["@imagemagick", "magick-wasm", "magick.wasm"];
+    const wasmUrl = new URL(import.meta.resolve(path.join("/")));
     await initializeImageMagick(await fs.readFile(wasmUrl));
   } else {
     // Deno, browser
